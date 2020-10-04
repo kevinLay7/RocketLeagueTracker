@@ -19,7 +19,7 @@
         <TextBlock Text="{Binding Rank.Mmr, Mode=OneWay, NotifyOnTargetUpdated=True, ElementName=RankDisplay}" TargetUpdated="TargetUpdated"
                 FontWeight="{Binding Rank.MatchesPlayed, Converter={StaticResource WeightConverter} , ElementName=RankDisplay}" Margin="30,45,30,2" TextAlignment="Center" >
         </TextBlock>
-        <Label HorizontalContentAlignment="Center" Content="{Binding Path=Rank.DivDown,ElementName=RankDisplay}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="13" Padding="0,0,0,0" FontSize="11" Margin="6,45,0,0" Width="17"/>
-        <Label HorizontalContentAlignment="Center" Content="{Binding Rank.DivUp, ElementName=RankDisplay}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Padding="0,0,0,0" FontSize="11" Margin="67,45,0,0" Width="17" RenderTransformOrigin="0.5,0.496"/>
+        <Label HorizontalContentAlignment="Center" Content="{Binding Path=Rank.DivDown,ElementName=RankDisplay}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="13" Padding="0,0,0,0" FontSize="11" Margin="6,45,0,0" Width="17" DataContextChanged="Label_DataContextChanged_1"/>
+        <Label HorizontalContentAlignment="Center" Content="{Binding Rank.DivUp, ElementName=RankDisplay}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="14" Padding="0,0,0,0" FontSize="11" Margin="67,45,0,0" Width="17" RenderTransformOrigin="0.5,0.496" DataContextChanged="Label_DataContextChanged"/>
     </Grid>
 </UserControl>

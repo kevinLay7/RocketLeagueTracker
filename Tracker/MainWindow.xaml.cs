@@ -5,6 +5,7 @@ using ControlzEx.Theming;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Onova;
+using Onova.Models;
 using Onova.Services;
 using System;
 using System.Collections.Generic;
@@ -112,7 +113,11 @@ namespace Tracker
             {
                 while (true)
                 {
-                    _manager = new Onova.UpdateManager(new GithubPackageResolver("kevinlay7", "RocketLeagueTracker", "*.zip"), new ZipPackageExtractor());
+                    _manager = new UpdateManager(
+                            AssemblyMetadata.FromAssembly(
+                                Assembly.GetEntryAssembly(),
+                                System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), 
+                            new GithubPackageResolver("kevinlay7", "RocketLeagueTracker", "*.zip"), new ZipPackageExtractor());
                     var check = await _manager.CheckForUpdatesAsync();
 
                     if (!check.CanUpdate)
@@ -123,7 +128,7 @@ namespace Tracker
 
                     UpdateButton.Dispatcher.Invoke(() => UpdateButton.Visibility = Visibility.Visible);
                     break;
-                }         
+                }
             });
         }
 

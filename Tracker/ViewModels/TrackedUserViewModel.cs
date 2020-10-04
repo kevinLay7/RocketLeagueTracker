@@ -67,15 +67,15 @@ namespace Common.Models
         public string Title { get => title; set { if (title != value) { title = value; NotifyPropertyChanged(nameof(Title)); } } }
         public double? Mmr { get => mmr; set { if (mmr != value) { mmr = value; NotifyPropertyChanged(nameof(Mmr)); } } }
         public string Division { get => division; set  { if (division != value) { division = value; NotifyPropertyChanged(nameof(Division)); } } }
-        public double? DivUp { get => divUp; set { if (divUp != value) { divUp = value; NotifyPropertyChanged(nameof(DivUp)); } } }
-        public double? DivDown { get => divDown; set  { if (divDown != value) { divDown = value; NotifyPropertyChanged(nameof(DivDown)); } } }
+        public double? DivUp { get => divUp; set { if (divUp != value && value != null) { divUp = value; NotifyPropertyChanged(nameof(DivUp)); } } }
+        public double? DivDown { get => divDown; set  { if (divDown != value && value != null) { divDown = value; NotifyPropertyChanged(nameof(DivDown)); } } }
         public string ImageUrl { get => imageUrl; set  { if (imageUrl != value) { imageUrl = value; NotifyPropertyChanged(nameof(ImageUrl)); } } }
         public double? MatchesPlayed { get => matchesPlayed; set { if (matchesPlayed != value) { matchesPlayed = value; NotifyPropertyChanged(nameof(MatchesPlayed)); } } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            System.Diagnostics.Debug.WriteLine($"{mmr}");
+            Debug.WriteLine($"{propertyName} : {this.GetType().GetProperty(propertyName).GetValue(this).ToString()}");
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }

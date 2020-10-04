@@ -86,20 +86,11 @@ namespace Tracker
             if (Rank?.MatchesPlayed < 10)
                 color = Colors.Gray;
 
-            if (Rank?.DivDown.HasValue == false || Rank?.DivDown.Value == 0)
-                RankDownArrow.Visibility = Visibility.Hidden;
-            else
-                RankDownArrow.Visibility = Visibility.Visible;
-
-            if (Rank?.DivUp.HasValue == false || Rank?.DivUp.Value == 0)
-                RankUpArrow.Visibility = Visibility.Hidden;
-            else
-                RankUpArrow.Visibility = Visibility.Visible;
-
             ColorAnimation ca = new ColorAnimation(color, new Duration(TimeSpan.FromSeconds(10)));
             item.Foreground = new SolidColorBrush(accentColor);
             item.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ca);
         }
+
 
         private static BitmapImage LoadImage(byte[] imageData)
         {
@@ -126,13 +117,38 @@ namespace Tracker
 
         private void RankDisplay_Loaded(object sender, RoutedEventArgs e)
         {
-            if(Rank != null)
+            if (Rank != null)
                 Pic = ImageManager.Instance().GetImageFromUri(Rank.ImageUrl);
             HoverText = "";
+            if (Rank?.DivUp.HasValue == false || Rank?.DivUp.Value == 0)
+                RankUpArrow.Visibility = Visibility.Hidden;
+            else
+                RankUpArrow.Visibility = Visibility.Visible;
+            if (Rank?.DivDown.HasValue == false || Rank?.DivDown.Value == 0)
+                RankDownArrow.Visibility = Visibility.Hidden;
+            else
+                RankDownArrow.Visibility = Visibility.Visible;
         }
 
         private void RankDisplay_SourceUpdated(object sender, DataTransferEventArgs e)
         {
+        }
+
+
+        private void Label_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (Rank?.DivUp.HasValue == false || Rank?.DivUp.Value == 0)
+                RankUpArrow.Visibility = Visibility.Hidden;
+            else
+                RankUpArrow.Visibility = Visibility.Visible;
+        }
+
+        private void Label_DataContextChanged_1(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (Rank?.DivDown.HasValue == false || Rank?.DivDown.Value == 0)
+                RankDownArrow.Visibility = Visibility.Hidden;
+            else
+                RankDownArrow.Visibility = Visibility.Visible;
 
         }
     }

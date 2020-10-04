@@ -247,9 +247,15 @@ namespace Tracker
                 var user = temp[i];
                 if (user.LastUpdate.HasValue && user.LastUpdate.Value < DateTime.Now.AddMinutes(-_settings.RefreshMins.Value) || force)
                 {
-                    await RefreshUser(user);
-                    _context.Send(x => _users[i] = user, null);
-                    changes = true;
+                    try
+                    {
+                        await RefreshUser(user);
+                        _context.Send(x => _users[i] = user, null);
+                        changes = true;
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
             });
 
