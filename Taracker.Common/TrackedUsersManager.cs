@@ -5,7 +5,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,7 +16,7 @@ namespace Tracker
     /// <summary>
     /// Object containing tracked users and is responsible for maintainging them
     /// </summary>
-    public class TrackedUsersManager
+    public class TrackedUsersManager : INotifyPropertyChanged
     {
         private readonly string trackedUsersFile = Constants.SaveLocation + "tracked.json";
         private RlTracker _searcher;
@@ -23,6 +25,9 @@ namespace Tracker
         private AppSettings _settings;
 
         private ObservableCollection<TrackedUser> _users;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public ObservableCollection<TrackedUser> Users
         {
             get
@@ -33,6 +38,18 @@ namespace Tracker
             set
             {
                 _users = value;
+            }
+        }
+
+        private DateTime _nextUpdate;
+        public DateTime NextUpdateTime { get => _nextUpdate;
+            set
+            {
+                if(_nextUpdate != value)
+                {
+                    _nextUpdate = value;
+                    NotifyPropertyChanged(nameof(NextUpdateTime));
+                }
             }
         }
 
@@ -49,6 +66,8 @@ namespace Tracker
             _searcher = searcher;
             _tokenSource = new CancellationTokenSource();
             _context = SynchronizationContext.Current;
+
+            NextUpdateTime = DateTime.Now;
         }
 
         #endregion
@@ -133,6 +152,7 @@ namespace Tracker
         {
             RefreshTrackedUsers(true);
             Save();
+            NextUpdateTime = DateTime.Now.AddMinutes(_settings.RefreshMins.Value);
         }
 
         /// <summary>
@@ -229,10 +249,16 @@ namespace Tracker
             {
                 while (!token.IsCancellationRequested)
                 {
-                    var changes = RefreshTrackedUsers();
-                    if (changes)
-                        Save();
-                    await Task.Delay(10000);
+                    if (DateTime.Now >= NextUpdateTime)
+                    {
+                        var changes = RefreshTrackedUsers();
+                        if (changes)
+                            Save();
+
+                        NextUpdateTime = DateTime.Now.AddMinutes(_settings.RefreshMins.Value);
+                    }
+
+                    await Task.Delay(1000);
                 }
             }, token);
         }
@@ -245,17 +271,14 @@ namespace Tracker
             Parallel.For(0, temp.Length, async i =>
             {
                 var user = temp[i];
-                if (user.LastUpdate.HasValue && user.LastUpdate.Value < DateTime.Now.AddMinutes(-_settings.RefreshMins.Value) || force)
+                try
                 {
-                    try
-                    {
-                        await RefreshUser(user);
-                        _context.Send(x => _users[i] = user, null);
-                        changes = true;
-                    }
-                    catch (Exception)
-                    {
-                    }
+                    await RefreshUser(user);
+                    _context.Send(x => _users[i] = user, null);
+                    changes = true;
+                }
+                catch (Exception)
+                {
                 }
             });
 
@@ -270,6 +293,11 @@ namespace Tracker
         }
 
         #endregion
+
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
 }

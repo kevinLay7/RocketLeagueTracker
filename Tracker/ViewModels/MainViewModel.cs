@@ -17,7 +17,16 @@ namespace Tracker
         private DateTime? lastUpdate;
         public DateTime? LastUpdate { get => lastUpdate; set { if (lastUpdate != value) { lastUpdate = value; NotifyPropertyChanged(); } } }
 
+
+        private DateTime nextUpdate;
+        public DateTime NextUpdate { get => nextUpdate; set { if (nextUpdate != value) { nextUpdate = value; NotifyPropertyChanged(nameof(NextUpdate)); } } }
+
+        private string refreshTime;
+        public string RefreshTime { get => refreshTime; set { if (refreshTime != value) { refreshTime = value; NotifyPropertyChanged(nameof(RefreshTime)); } } }
+
+
         private ObservableCollection<TrackedUserViewModel> _users;
+
         public ObservableCollection<TrackedUserViewModel> Users
         {
             get

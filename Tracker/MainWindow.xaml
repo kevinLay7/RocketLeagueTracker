@@ -35,6 +35,7 @@
         <local:TextBlockWeightConverter x:Key="WeightConverter"/>
         <local:NullImageConverter x:Key="nullImageConverter"/>
         <local:IsEqualOrGreaterThanConverter x:Key="IsEqualOrGreaterThanConverter"/>
+        <local:TimeConverter x:Key="timeConverter"/>
     </Window.Resources>
 
     <Grid Margin="0,0,0,0">
@@ -52,7 +53,7 @@
         </ComboBox>
 
 
-        <Button x:Name="UpdateButton" HorizontalAlignment="Left" Margin="561,0,0,0" Background="Transparent" VerticalAlignment="Center" 
+        <Button x:Name="UpdateButton" HorizontalAlignment="Left" Margin="522,3,0,0" Background="Transparent" VerticalAlignment="Top" 
                 Click="UpdateButton_Click" Height="40" Width="40" BorderThickness="0" ToolTip="Install Update" Visibility="Hidden"
                 Style="{DynamicResource MahApps.Styles.Button.Circle}">
             <iconPacks:PackIconModern Kind="Download" Foreground="LightGreen"/>
@@ -61,18 +62,20 @@
                 Width="40" Background="Transparent" BorderThickness="0" Style="{DynamicResource MahApps.Styles.Button.Circle}">
             <iconPacks:PackIconEvaIcons Kind="Search"/>
         </Button>
-        <Button x:Name="SettingsButton" HorizontalAlignment="Left" Margin="616,3,0,0" Click="SettingsButton_Click" Width="40" BorderThickness="0" Background="Transparent" Style="{DynamicResource MahApps.Styles.Button.Circle}" RenderTransformOrigin="0.277,0.181" Height="40" VerticalAlignment="Top">
+        <Button x:Name="SettingsButton" HorizontalAlignment="Left" Margin="567,3,0,0" Click="SettingsButton_Click" Width="40" BorderThickness="0" Background="Transparent" Style="{DynamicResource MahApps.Styles.Button.Circle}" RenderTransformOrigin="0.277,0.181" Height="40" VerticalAlignment="Top">
             <iconPacks:FeatherIcons Kind="Settings"/>
         </Button>
-        <Button x:Name="ForceRefreshButton" Margin="661,3,0,0" Click="ForceRefreshButton_Click" BorderBrush="Transparent"
-                Style="{DynamicResource MahApps.Styles.Button.Circle}" ToolTip="Refresh" RenderTransformOrigin="0.211,0.276" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left" Width="40">
-            <iconPacks:PackIconModern  Kind="Refresh"/>
+        <Button x:Name="ForceRefreshButton" Margin="612,3,0,0" Click="ForceRefreshButton_Click" BorderBrush="Transparent" Background="Transparent"
+                RenderTransformOrigin="0.211,0.276" Height="40" Style="{StaticResource MahApps.Styles.Button.Square}"
+                VerticalAlignment="Top" HorizontalAlignment="Left" Width="116">
+            <DockPanel>
+                <iconPacks:PackIconModern DockPanel.Dock="Left" Kind="Refresh"/>
+                <Label DockPanel.Dock="Right" Content="{Binding RefreshTime}" VerticalContentAlignment="Top" Padding="5,0,0,0" FontSize="12" />
+            </DockPanel>
         </Button>
-
 
         <mah:ProgressRing x:Name="Spinner" Foreground="{DynamicResource MahApps.Brushes.Accent}"
                   IsActive="False" Height="21" Width="31" HorizontalAlignment="Left" Margin="353,0,0,0" Panel.ZIndex="999" />
-
 
         <DataGrid x:Name="SearchResults" BorderThickness="2" BorderBrush="white" Visibility="Hidden" AutoGenerateColumns="False" Margin="0,15,0,54" Panel.ZIndex="100" HorizontalAlignment="Center" Width="490" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" Grid.Row="1">
             <DataGrid.Columns>
@@ -132,7 +135,7 @@
         </DataGrid>
 
         <Grid Name="TrackedGrid" ScrollViewer.CanContentScroll="True" HorizontalAlignment="Center" Width="738" Margin="0,2,0,0" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
-            <ListView x:Name="TrackedUserGrid" Visibility="Visible" ItemsSource="{Binding Users}" Margin="10,2,10,36" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+            <ListView x:Name="TrackedUserGrid" Visibility="Visible" ItemsSource="{Binding Users}" Margin="10,2,10,10" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridView.ColumnHeaderContainerStyle>
@@ -211,8 +214,6 @@
                     </ContextMenu>
                 </ListView.ContextMenu>
             </ListView>
-
-            <Label x:Name="updateTime" Content="{Binding LastUpdate}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="149" Margin="0,0,5,9" Height="25" VerticalAlignment="Bottom"/>
         </Grid>
 
     </Grid>
