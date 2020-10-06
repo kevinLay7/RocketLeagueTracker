@@ -43,6 +43,7 @@ namespace Tracker
             }
         }
 
+        private string previousPicUrl;
         private byte[] _pic;
         public byte[] Pic
 
@@ -78,6 +79,16 @@ namespace Tracker
 
         private void TargetUpdated(object sender, DataTransferEventArgs e)
         {
+            //This user control's bindings are not auto-updating so for them to update
+            if(previousPicUrl != Rank?.ImageUrl)
+            {
+                previousPicUrl = Rank.ImageUrl;
+                Pic = ImageManager.Instance().GetImageFromUri(Rank.ImageUrl);
+            }
+
+            HoverText = "";
+            _ = HoverText;
+
             var accentColor = ThemeManager.Current.DetectTheme().PrimaryAccentColor;
             dynamic item = sender;
 
@@ -90,7 +101,6 @@ namespace Tracker
             item.Foreground = new SolidColorBrush(accentColor);
             item.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ca);
         }
-
 
         private static BitmapImage LoadImage(byte[] imageData)
         {
@@ -117,23 +127,21 @@ namespace Tracker
 
         private void RankDisplay_Loaded(object sender, RoutedEventArgs e)
         {
+            this.previousPicUrl = Rank?.ImageUrl;
             if (Rank != null)
                 Pic = ImageManager.Instance().GetImageFromUri(Rank.ImageUrl);
             HoverText = "";
+
             if (Rank?.DivUp.HasValue == false || Rank?.DivUp.Value == 0)
                 RankUpArrow.Visibility = Visibility.Hidden;
             else
                 RankUpArrow.Visibility = Visibility.Visible;
+
             if (Rank?.DivDown.HasValue == false || Rank?.DivDown.Value == 0)
                 RankDownArrow.Visibility = Visibility.Hidden;
             else
                 RankDownArrow.Visibility = Visibility.Visible;
         }
-
-        private void RankDisplay_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
-        }
-
 
         private void Label_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -150,6 +158,6 @@ namespace Tracker
             else
                 RankDownArrow.Visibility = Visibility.Visible;
 
-        }
+        }  
     }
 }

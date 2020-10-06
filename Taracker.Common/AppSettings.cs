@@ -62,7 +62,7 @@ namespace Tracker
                 //If the settings file doesn't exist, create it.
                 if (!System.IO.File.Exists(settingsFilePath))
                 {
-                    System.IO.File.WriteAllText(settingsFilePath, JsonConvert.SerializeObject(this));               
+                    System.IO.File.WriteAllText(settingsFilePath, JsonConvert.SerializeObject(this));
                 }
 
                 string json = File.ReadAllText(settingsFilePath);
@@ -109,11 +109,8 @@ namespace Tracker
             }
             set
             {
-                if (_cacheFolderLocation != value)
-                {
-                    _cacheFolderLocation = value;
-                    TrySave(() => CacheFolderLocation);
-                }
+                _cacheFolderLocation = value;
+                TrySave(() => CacheFolderLocation);
             }
         }
 
@@ -131,11 +128,8 @@ namespace Tracker
             }
             set
             {
-                if (_saveFolderLocation != value)
-                {
-                    _saveFolderLocation = value;
-                    TrySave(() => SaveFolderLocation);
-                }
+                _saveFolderLocation = value;
+                TrySave(() => SaveFolderLocation);
             }
         }
 
@@ -152,11 +146,8 @@ namespace Tracker
             }
             set
             {
-                if (_autoUpdate != value)
-                {
-                    _autoUpdate = value;
-                    TrySave(() => AutoUpdate);
-                }
+                _autoUpdate = value;
+                TrySave(() => AutoUpdate);
             }
         }
 
@@ -173,11 +164,8 @@ namespace Tracker
             }
             set
             {
-                if (_refreshMins != value)
-                {
-                    _refreshMins = value;
-                    TrySave(() => RefreshMins);
-                }
+                _refreshMins = value;
+                TrySave(() => RefreshMins);
             }
         }
 
@@ -194,11 +182,8 @@ namespace Tracker
             }
             set
             {
-                if (_minimizedToTray != value)
-                {
-                    _minimizedToTray = value;
-                    TrySave(() => MinimizeToTray);
-                }
+                _minimizedToTray = value;
+                TrySave(() => MinimizeToTray);
             }
         }
 
@@ -207,7 +192,7 @@ namespace Tracker
         {
             get
             {
-                if(_useDarkMode.HasValue == false)
+                if (_useDarkMode.HasValue == false)
                 {
                     return true;
                 }
@@ -215,11 +200,8 @@ namespace Tracker
             }
             set
             {
-                if(_useDarkMode != value)
-                {
-                    _useDarkMode = value;
-                    TrySave(() => UseDarkMode);
-                }
+                _useDarkMode = value;
+                TrySave(() => UseDarkMode);
             }
         }
 
@@ -236,11 +218,8 @@ namespace Tracker
             }
             set
             {
-                if (_color != value)
-                {
-                    _color = value;
-                    TrySave(() => Color);
-                }
+                _color = value;
+                TrySave(() => Color);
             }
         }
     }

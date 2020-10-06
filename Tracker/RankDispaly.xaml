@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Tracker"
              mc:Ignorable="d"              
              xmlns:cachedImage="clr-namespace:CachedImage;assembly=CachedImage" xmlns:iconPacks="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Modern" xmlns:iconPacks1="clr-namespace:MahApps.Metro.IconPacks;assembly=MahApps.Metro.IconPacks.Typicons"
-             d:DesignHeight="60" d:DesignWidth="100" x:Name="RankDisplay" Loaded="RankDisplay_Loaded" SourceUpdated="RankDisplay_SourceUpdated">
+             d:DesignHeight="60" d:DesignWidth="100" x:Name="RankDisplay" Loaded="RankDisplay_Loaded">
     <UserControl.Resources>
         <local:TextBlockWeightConverter x:Key="WeightConverter"/>
         <local:NullImageConverter x:Key="nullImageConverter"/>
@@ -15,7 +15,7 @@
     <Grid>
         <iconPacks1:PackIconTypicons Name="RankDownArrow" Kind="ArrowSortedDown" Height="8" Width="9" Foreground="{DynamicResource MahApps.Brushes.Accent}" Margin="10,37,0,0"/>
         <iconPacks1:PackIconTypicons Name="RankUpArrow"  Kind="ArrowSortedUp" Margin="71,37,0,0" Width="9" Height="8" Foreground="{DynamicResource MahApps.Brushes.Accent}" ToolTip="{Binding Path=Rank.DivUp,ElementName=RankDisplay}"/>
-        <cachedImage:Image x:Name="Img" Height="40" Source="{Binding Path=Pic, ElementName=RankDisplay, Converter= {StaticResource nullImageConverter}}" ToolTip="{Binding Path=HoverText, ElementName=RankDisplay}" Margin="25,3,27,17" Stretch="Uniform" StretchDirection="Both" Width="40" />
+        <Image x:Name="Img" Height="40" Source="{Binding Path=Pic, ElementName=RankDisplay, Converter= {StaticResource nullImageConverter}}" ToolTip="{Binding Path=HoverText, ElementName=RankDisplay}" Margin="25,3,27,17" Stretch="Uniform" StretchDirection="Both" Width="40" />
         <TextBlock Text="{Binding Rank.Mmr, Mode=OneWay, NotifyOnTargetUpdated=True, ElementName=RankDisplay}" TargetUpdated="TargetUpdated"
                 FontWeight="{Binding Rank.MatchesPlayed, Converter={StaticResource WeightConverter} , ElementName=RankDisplay}" Margin="30,45,30,2" TextAlignment="Center" >
         </TextBlock>

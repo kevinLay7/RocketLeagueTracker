@@ -49,6 +49,7 @@ namespace Tracker
             this.DataContext = vm;
             CheckForUpdates();
 
+            //Start timer to show next refresh time
             System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += DispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -313,19 +314,5 @@ namespace Tracker
 
         #endregion
 
-        /// <summary>
-        /// When a binding is updated, change the foreground and then switch it back to default to 
-        /// emphasise that a change happened
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TargetUpdated(object sender, DataTransferEventArgs e)
-        {
-            var accentColor = ThemeManager.Current.DetectTheme().PrimaryAccentColor;
-            dynamic item = sender;
-            ColorAnimation ca = new ColorAnimation(Colors.White, new Duration(TimeSpan.FromSeconds(10)));
-            item.Foreground = new SolidColorBrush(accentColor);
-            item.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, ca);
-        }
     }
 }

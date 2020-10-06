@@ -10,7 +10,7 @@ namespace Tracker
 
         public bool MinimizeToTray { get; set; }
         public string SaveLocation { get; set; }
-        public int RefreshMinutes { get; set; }
+        public int RefreshMinutes { get => refreshMinutes; set { refreshMinutes = value; NotifyPropertyChanged(nameof(RefreshMinutes)); } }
         public bool AutoUpdate { get; set; }
 
         private bool _useDarkMode;
@@ -30,6 +30,8 @@ namespace Tracker
         }
 
         private string _selectedColor;
+        private int refreshMinutes;
+
         public string SelectedColor
         {
             get => _selectedColor;
