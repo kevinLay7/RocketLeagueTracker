@@ -23,7 +23,7 @@
                             <DockPanel Margin="0,0,0,5">
                                 <Rectangle Fill="{Binding Won, Converter={StaticResource ColorConverter}}" Width="5"  DockPanel.Dock="Left"/>
                                 <DockPanel DockPanel.Dock="Right" Margin="5,0,0,0">
-                                    <TextBlock Text="{Binding Won, Converter={StaticResource WinTextConverter}}" DockPanel.Dock="Top" FontSize="14" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Status}" DockPanel.Dock="Top" FontSize="14" FontWeight="Bold"/>
                                     <TextBlock Text="{Binding Mode}" DockPanel.Dock="Bottom"/>
                                 </DockPanel>
                             </DockPanel>

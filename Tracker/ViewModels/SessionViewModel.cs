@@ -60,6 +60,7 @@ namespace Common.Models
         public string Tier { get; set; }
         public string Division { get; set; }
         public string Mode { get; set; }
+        public string Status { get; set; }
         public bool Won { get; set; }
         public long Delta { get; set; }
         public long Mmr { get; set; }

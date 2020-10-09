@@ -223,7 +223,14 @@ namespace Tracker
         public async Task TrackUserSession(long userId)
         {
            _sessionUser = _users.FirstOrDefault(x => x.UserId == userId);
-           Session = await _searcher.GetUserSession(userId, _sessionUser.PlatForm);
+            try
+            {
+                Session = await _searcher.GetUserSession(userId, _sessionUser.PlatForm);
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         public void StopTrackingUserSession()
@@ -291,8 +298,14 @@ namespace Tracker
 
                         if(_sessionUser != null)
                         {
-                            var s = await _searcher.GetUserSession(_sessionUser.UserId, _sessionUser.PlatForm);
-                            _context.Send(x => Session = s, null);
+                            try
+                            {
+                                var s = await _searcher.GetUserSession(_sessionUser.UserId, _sessionUser.PlatForm);
+                                _context.Send(x => Session = s, null);
+                            }
+                            catch (Exception)
+                            {
+                            }
                         }
 
                         NextUpdateTime = DateTime.Now.AddMinutes(_settings.RefreshMins.Value);

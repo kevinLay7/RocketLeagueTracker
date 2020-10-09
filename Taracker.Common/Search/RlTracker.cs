@@ -98,21 +98,30 @@ namespace Common.Search
 
         public async Task<Session> GetUserSession(long? userid, Platform type)
         {
-            var plat = GetPlatformString(type);
-            var uri = new Uri($"https://api.tracker.gg/api/v2/rocket-league/standard/profile/{plat}/{userid.ToString()}/sessions?");
-
-            using (var client = new HttpClient())
+            try
             {
-                var response = await client.GetAsync(uri);
+                var plat = GetPlatformString(type);
+                var uri = new Uri($"https://api.tracker.gg/api/v2/rocket-league/standard/profile/{plat}/{userid.ToString()}/sessions?");
 
-                if (!response.IsSuccessStatusCode)
-                    throw new Exception($"Error finding user for Platform: {type} User: {userid.ToString()}");
+                using (var client = new HttpClient())
+                {
+                    var response = await client.GetAsync(uri);
 
-                var responseText = await response.Content.ReadAsStringAsync();
-                var userResponse = JsonConvert.DeserializeObject<Session>(responseText);
+                    if (!response.IsSuccessStatusCode)
+                        throw new Exception($"Error finding user for Platform: {type} User: {userid.ToString()}");
 
-                return userResponse;
+                    var responseText = await response.Content.ReadAsStringAsync();
+                    var userResponse = JsonConvert.DeserializeObject<Session>(responseText);
+
+                    return userResponse;
+                }
             }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+                throw;
+            }
+
         }
 
         public async Task GetRankInfo()

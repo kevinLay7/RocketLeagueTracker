@@ -1,6 +1,7 @@
 ﻿using RLTracker.Models.Session;
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Tracker;
@@ -93,6 +94,23 @@ namespace Common.Models
 
         public static void SessionViewModel(Session session, SessionsViewModel model, string playername)
         {
+            string StatusParser(string input, long? delta)
+            {
+                if (delta < 0)
+                    return "Defeat";
+
+                if (input.Contains("wins"))
+                {
+                    return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input.Trim().ToLower());
+                }
+                if(input == "victory")
+                {
+                    return "Win";
+                }
+
+                return "Defeat";
+            }
+
             foreach (var item in session.Data.Items)
             {
                 var m = new SessionViewModel();
@@ -104,7 +122,8 @@ namespace Common.Models
                     var matchViewModel = new MatchViewModel()
                     {
                         Mode = match.Metadata.Playlist,
-                        Won = match.Metadata.Result == "victory",
+                        Won = match.Stats.Rating.Metadata.RatingDelta > 0,
+                        Status = StatusParser(match.Metadata.Result, match.Stats.Rating.Metadata.RatingDelta),
                         Mmr = match.Stats.Rating.Value.Value,
                         Delta = match.Stats.Rating.Metadata.RatingDelta.HasValue ? match.Stats.Rating.Metadata.RatingDelta.Value : 0,
                         IconUrl = match.Stats.Rating.Metadata.IconUrl != null ? match.Stats.Rating.Metadata.IconUrl.ToString() : "",
