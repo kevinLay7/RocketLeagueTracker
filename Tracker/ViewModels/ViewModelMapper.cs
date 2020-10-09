@@ -1,6 +1,8 @@
-﻿using System;
+﻿using RLTracker.Models.Session;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Tracker;
 
 namespace Common.Models
@@ -87,6 +89,34 @@ namespace Common.Models
             model.SaveLocation = settings.SaveFolderLocation;
             model.SelectedColor = settings.Color;
             model.UseDarkMode = settings.UseDarkMode.Value;
+        }
+
+        public static void SessionViewModel(Session session, SessionsViewModel model, string playername)
+        {
+            foreach (var item in session.Data.Items)
+            {
+                var m = new SessionViewModel();
+                m.Time = item.Metadata.EndDate.DisplayValue.Value.LocalDateTime;
+                m.Player = playername;
+
+                foreach (var match in item.Matches)
+                {
+                    var matchViewModel = new MatchViewModel()
+                    {
+                        Mode = match.Metadata.Playlist,
+                        Won = match.Metadata.Result == "victory",
+                        Mmr = match.Stats.Rating.Value.Value,
+                        Delta = match.Stats.Rating.Metadata.RatingDelta.HasValue ? match.Stats.Rating.Metadata.RatingDelta.Value : 0,
+                        IconUrl = match.Stats.Rating.Metadata.IconUrl != null ? match.Stats.Rating.Metadata.IconUrl.ToString() : "",
+                        Division = match.Stats.Rating.Metadata.Division,
+                        Tier = match.Stats.Rating.Metadata.Tier
+                    };
+                    matchViewModel.Pic = ImageManager.Instance().GetImageFromUri(matchViewModel.IconUrl);
+                    m.Matches.Add(matchViewModel);
+                }
+
+                model.Sessions.Add(m);
+            }
         }
     }
 }

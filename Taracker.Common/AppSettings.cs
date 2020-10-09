@@ -90,7 +90,6 @@ namespace Tracker
 
                     string output = JsonConvert.SerializeObject(jsonObj, Formatting.Indented);
                     System.IO.File.WriteAllText(settingsFilePath, output);
-                    System.Diagnostics.Debug.WriteLine($"Save");
                 }
             }
         }

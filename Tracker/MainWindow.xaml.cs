@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -42,6 +43,7 @@ namespace Tracker
             _tracker = new RlTracker();
             _trackedUsersManager = new TrackedUsersManager(_tracker, _settings);
             _trackedUsersManager.Users.CollectionChanged += Users_CollectionChanged;
+            _trackedUsersManager.SessionUserUpdated += _trackedUsersManager_SessionUserUpdated;
             _trackedUsersManager.StartMonitor();
 
             CachedImage.FileCache.AppCacheMode = CachedImage.FileCache.CacheMode.Dedicated;
@@ -54,6 +56,23 @@ namespace Tracker
             dispatcherTimer.Tick += DispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
+        }
+
+        private void _trackedUsersManager_SessionUserUpdated(object sender, RLTracker.Models.Session.Session e)
+        {
+            var selectedItem = TrackedUserGrid.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                var record = selectedItem as TrackedUserViewModel;
+
+                sessionsViewModel = new SessionsViewModel();
+                ViewModelMapper.SessionViewModel(e, sessionsViewModel, record.Name);
+                SelectedPlayer.Content = record.Name;
+                SessionsDataGrid.DataContext = sessionsViewModel.Sessions;
+                if (TrackedGrid.RowDefinitions[2].Height == new GridLength(0))
+                    TrackedGrid.RowDefinitions[2].Height = new GridLength(TrackedGrid.ActualHeight / 2 - 5);
+            }
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -254,6 +273,19 @@ namespace Tracker
             }
         }
 
+        private SessionsViewModel sessionsViewModel;
+
+        private async void TrackedUserGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var selectedItem = TrackedUserGrid.SelectedItem;
+
+            if(selectedItem != null)
+            {
+                var record = selectedItem as TrackedUserViewModel;
+                await _trackedUsersManager.TrackUserSession(record.UserId);
+            }
+        }
+
         #region Context Menu Clicks
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -312,7 +344,16 @@ namespace Tracker
         }
 
 
+
         #endregion
 
+        private void CloseSessionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            sessionsViewModel = null;
+            SessionsDataGrid.DataContext = null;
+            TrackedGrid.RowDefinitions[2].Height = new GridLength(0);
+            GC.Collect();
+            _trackedUsersManager.StopTrackingUserSession();
+        }
     }
 }

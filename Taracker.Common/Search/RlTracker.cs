@@ -1,5 +1,6 @@
 ﻿using Common.Models.Search;
 using Newtonsoft.Json;
+using RLTracker.Models.Session;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -92,6 +93,25 @@ namespace Common.Search
                 var userResponse = JsonConvert.DeserializeObject<Response>(responseText);
 
                 return userResponse.Data;
+            }
+        }
+
+        public async Task<Session> GetUserSession(long? userid, Platform type)
+        {
+            var plat = GetPlatformString(type);
+            var uri = new Uri($"https://api.tracker.gg/api/v2/rocket-league/standard/profile/{plat}/{userid.ToString()}/sessions?");
+
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(uri);
+
+                if (!response.IsSuccessStatusCode)
+                    throw new Exception($"Error finding user for Platform: {type} User: {userid.ToString()}");
+
+                var responseText = await response.Content.ReadAsStringAsync();
+                var userResponse = JsonConvert.DeserializeObject<Session>(responseText);
+
+                return userResponse;
             }
         }
 

@@ -8,7 +8,7 @@
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:cachedImage="clr-namespace:CachedImage;assembly=CachedImage"
         mc:Ignorable="d"
-        Title="RLTracker" Height="456" Width="738" MaxWidth="738" MinWidth="738" MinHeight="500" ResizeMode="CanResize" Icon="/rocket-league-icon.ico">
+        Title="RLTracker" Height="600" Width="738" MaxWidth="738" MinWidth="738" MinHeight="500" ResizeMode="CanResize" Icon="/rocket-league-icon.ico">
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
             <Button x:Name="GithubButton" Click="LaunchGitHubSite" ToolTip="Open up the GitHub site" Content="">
@@ -135,86 +135,105 @@
         </DataGrid>
 
         <Grid Name="TrackedGrid" ScrollViewer.CanContentScroll="True" HorizontalAlignment="Center" Width="738" Margin="0,2,0,0" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
-            <ListView x:Name="TrackedUserGrid" Visibility="Visible" ItemsSource="{Binding Users}" Margin="10,2,10,10" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
-                <ListView.View>
-                    <GridView AllowsColumnReorder="False">
-                        <GridView.ColumnHeaderContainerStyle>
-                            <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="{x:Type GridViewColumnHeader}">
-                                <Setter Property="IsHitTestVisible" Value="False"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="BorderBrush" Value="Transparent"/>
-                                <Setter Property="FontWeight" Value="Bold"/>
-                            </Style>
-                        </GridView.ColumnHeaderContainerStyle>
-                        <GridView.Columns>
-                            <GridViewColumn Width="200">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <DockPanel Margin="10, 10, 10, 10">
-                                            <cachedImage:Image DockPanel.Dock="Left" Source="{Binding Avatar, Converter={StaticResource nullImageConverter}}" Height="60" Width="60"/>
-                                            <Grid Margin="10,21">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto" />
-                                                </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="0" />
+            </Grid.RowDefinitions>
+            
+            <DataGrid Name="TrackedUserGrid" Grid.Row="0" ItemsSource="{Binding Users}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" AutoGenerateColumns="False" CanUserAddRows="False" 
+                      CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False"  EnableRowVirtualization="False" EnableColumnVirtualization="False"
+                      MouseDoubleClick="TrackedUserGrid_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="200">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DockPanel Margin="5, 10, 0, 5">
+                                    <cachedImage:Image DockPanel.Dock="Left" Source="{Binding Avatar, Converter={StaticResource nullImageConverter}}" Height="60" Width="60"/>
+                                    <Grid Margin="5, 21, 0, 0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
 
-                                                <TextBlock Text="{Binding Name}" FontWeight="Bold" />
-                                            </Grid>
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="100" Header="Un-Ranked">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <local:RankDispaly Rank="{Binding CasualModel}"  />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="100" Header="Ranked 3v3">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <local:RankDispaly Rank="{Binding ThreesModel}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="100" Header="Ranked 2v2" >
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <local:RankDispaly Rank="{Binding TwosModel}"  />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="100" Header="Ranked 1v1">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <local:RankDispaly Rank="{Binding OnesModel}"  />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="100" Header="Tournaments">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <local:RankDispaly Rank="{Binding TournamentModel}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView.Columns>
-                    </GridView>
-                </ListView.View>
-                <ListView.ContextMenu>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="11" Padding="0"/>
+                                    </Grid>
+                                </DockPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="100" Header="Un-Ranked">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <local:RankDispaly Rank="{Binding CasualModel}"  />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="100" Header="Ranked 3v3">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <local:RankDispaly Rank="{Binding ThreesModel}"  />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="100" Header="Ranked 2v2">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <local:RankDispaly Rank="{Binding TwosModel}"  />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="100" Header="Ranked 1v1">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <local:RankDispaly Rank="{Binding OnesModel}"  />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="100" Header="Tournament">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <local:RankDispaly Rank="{Binding TournamentModel}"  />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+                <DataGrid.ContextMenu>
                     <ContextMenu Name="menu">
                         <MenuItem Header="Move Up" Click="MoveUp_Click"></MenuItem>
                         <MenuItem Header="Move Down" Click="MoveDown_Click"></MenuItem>
                         <MenuItem Header="Open Tracker" Click="MenuItem_Click"></MenuItem>
                         <MenuItem Header="Remove Tracked User" Click="RemoveTrackedUserButton_Click"/>
                     </ContextMenu>
-                </ListView.ContextMenu>
-            </ListView>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+            
+            <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Background="{DynamicResource MahApps.Brushes.Badged.Background}"/>
+            
+            <Grid x:Name="SessionsGrid" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="631*"/>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label x:Name="SelectedPlayer" Grid.Column="0" Grid.Row="1" FontWeight="Bold" FontSize="16"  />
+                <Button x:Name="CloseSessionsButton" Content="Close" Grid.Column="1" Grid.Row="1" Click="CloseSessionsButton_Click"/>
+                <ListView Name="SessionsDataGrid" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding}" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <local:SessionDisplay Session="{Binding}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
         </Grid>
-
     </Grid>
 </mah:MetroWindow>

@@ -80,7 +80,7 @@ namespace Tracker
         private void TargetUpdated(object sender, DataTransferEventArgs e)
         {
             //This user control's bindings are not auto-updating so for them to update
-            if(previousPicUrl != Rank?.ImageUrl)
+            if(Rank != null && previousPicUrl != Rank?.ImageUrl)
             {
                 previousPicUrl = Rank.ImageUrl;
                 Pic = ImageManager.Instance().GetImageFromUri(Rank.ImageUrl);

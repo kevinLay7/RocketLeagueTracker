@@ -37,4 +37,40 @@ namespace Tracker
             throw new NotImplementedException();
         }
     }
+
+    class WinColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if((bool) value == true)
+            {
+                return Brushes.DarkGreen;
+            }
+
+            return Brushes.DarkRed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class WinTextConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if ((bool)value == true)
+            {
+                return "Win";
+            }
+
+            return "Defeat";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

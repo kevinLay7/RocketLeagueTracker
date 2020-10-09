@@ -2,17 +2,20 @@
 using Common.Models;
 using Common.Search;
 using Newtonsoft.Json;
+using RLTracker.Models.Session;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Tracker
 {
+
     /// <summary>
     /// Object containing tracked users and is responsible for maintainging them
     /// </summary>
@@ -23,6 +26,25 @@ namespace Tracker
         private CancellationTokenSource _tokenSource;
         private SynchronizationContext _context;
         private AppSettings _settings;
+
+
+        public event EventHandler<Session> SessionUserUpdated;
+
+        private TrackedUser _sessionUser;
+        private Session session;
+        public Session Session
+        {
+            get
+            {
+                return session;
+            }
+            set
+            {
+                session = value;
+                SessionUserUpdated?.Invoke(this, session);
+            }
+        }
+
 
         private ObservableCollection<TrackedUser> _users;
 
@@ -198,6 +220,18 @@ namespace Tracker
             Save();
         }
 
+        public async Task TrackUserSession(long userId)
+        {
+           _sessionUser = _users.FirstOrDefault(x => x.UserId == userId);
+           Session = await _searcher.GetUserSession(userId, _sessionUser.PlatForm);
+        }
+
+        public void StopTrackingUserSession()
+        {
+            _sessionUser = null;
+
+        }
+
         #endregion
 
         #region Persistence
@@ -254,6 +288,12 @@ namespace Tracker
                         var changes = RefreshTrackedUsers();
                         if (changes)
                             Save();
+
+                        if(_sessionUser != null)
+                        {
+                            var s = await _searcher.GetUserSession(_sessionUser.UserId, _sessionUser.PlatForm);
+                            _context.Send(x => Session = s, null);
+                        }
 
                         NextUpdateTime = DateTime.Now.AddMinutes(_settings.RefreshMins.Value);
                     }
