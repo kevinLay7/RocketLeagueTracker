@@ -75,6 +75,50 @@ namespace Common.Models
                 vm.TournamentModel.Title = tournament?.Stats.Tier.Metadata.Name;
                 vm.TournamentModel.Mmr = tournament?.Stats.Rating.Value;
 
+                var rumble = user.Data.Segments.FirstOrDefault(x => x.Attributes.PlaylistId == 28);
+                if (vm.RumbleModel == null)
+                    vm.RumbleModel = new RankViewModel();
+                vm.RumbleModel.ImageUrl = rumble?.Stats.Tier.Metadata.IconUrl?.ToString();
+                vm.RumbleModel.Title = rumble?.Stats.Tier.Metadata.Name;
+                vm.RumbleModel.Mmr = rumble?.Stats.Rating.Value;
+                vm.RumbleModel.MatchesPlayed = rumble?.Stats.MatchesPlayed.Value;
+                vm.RumbleModel.DivDown = rumble?.Stats.Division.Metadata.DeltaDown;
+                vm.RumbleModel.DivUp = rumble?.Stats.Division.Metadata.DeltaUp;
+                vm.RumbleModel.Division = rumble?.Stats.Division.Metadata.Name;
+
+                var dropshot = user.Data.Segments.FirstOrDefault(x => x.Attributes.PlaylistId == 29);
+                if (vm.DropshotModel == null)
+                    vm.DropshotModel = new RankViewModel();
+                vm.DropshotModel.ImageUrl = dropshot?.Stats.Tier.Metadata.IconUrl?.ToString();
+                vm.DropshotModel.Title = dropshot?.Stats.Tier.Metadata.Name;
+                vm.DropshotModel.Mmr = dropshot?.Stats.Rating.Value;
+                vm.DropshotModel.MatchesPlayed = dropshot?.Stats.MatchesPlayed.Value;
+                vm.DropshotModel.DivDown = dropshot?.Stats.Division.Metadata.DeltaDown;
+                vm.DropshotModel.DivUp = dropshot?.Stats.Division.Metadata.DeltaUp;
+                vm.DropshotModel.Division = dropshot?.Stats.Division.Metadata.Name;
+
+                var hoops = user.Data.Segments.FirstOrDefault(x => x.Attributes.PlaylistId == 27);
+                if (vm.HoopsModel == null)
+                    vm.HoopsModel = new RankViewModel();
+                vm.HoopsModel.ImageUrl = hoops?.Stats.Tier.Metadata.IconUrl?.ToString();
+                vm.HoopsModel.Title = hoops?.Stats.Tier.Metadata.Name;
+                vm.HoopsModel.Mmr = hoops?.Stats.Rating.Value;
+                vm.HoopsModel.MatchesPlayed = hoops?.Stats.MatchesPlayed.Value;
+                vm.HoopsModel.DivDown = hoops?.Stats.Division.Metadata.DeltaDown;
+                vm.HoopsModel.DivUp = hoops?.Stats.Division.Metadata.DeltaUp;
+                vm.HoopsModel.Division = hoops?.Stats.Division.Metadata.Name;
+
+                var snowday = user.Data.Segments.FirstOrDefault(x => x.Attributes.PlaylistId == 30);
+                if (vm.SnowdayModel == null)
+                    vm.SnowdayModel = new RankViewModel();
+                vm.SnowdayModel.ImageUrl = snowday?.Stats.Tier.Metadata.IconUrl?.ToString();
+                vm.SnowdayModel.Title = snowday?.Stats.Tier.Metadata.Name;
+                vm.SnowdayModel.Mmr = snowday?.Stats.Rating.Value;
+                vm.SnowdayModel.MatchesPlayed = snowday?.Stats.MatchesPlayed.Value;
+                vm.SnowdayModel.DivDown = snowday?.Stats.Division.Metadata.DeltaDown;
+                vm.SnowdayModel.DivUp = snowday?.Stats.Division.Metadata.DeltaUp;
+                vm.SnowdayModel.Division = snowday?.Stats.Division.Metadata.Name;
+            
             }
             catch (Exception)
             {

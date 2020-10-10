@@ -21,6 +21,11 @@ namespace Common.Models
         public RankViewModel CasualModel { get; set; }
         public RankViewModel TournamentModel { get; set; }
 
+        public RankViewModel RumbleModel { get; set; }
+        public RankViewModel DropshotModel { get; set; }
+        public RankViewModel HoopsModel { get; set; }
+        public RankViewModel SnowdayModel { get; set; }
+
         private SessionsViewModel _session;
         public SessionsViewModel Sessions 
         {

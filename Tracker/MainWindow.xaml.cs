@@ -70,6 +70,7 @@ namespace Tracker
                 ViewModelMapper.SessionViewModel(e, sessionsViewModel, record.Name);
                 SelectedPlayer.Content = record.Name;
                 SessionsDataGrid.DataContext = sessionsViewModel.Sessions;
+                SessionsDataGrid.Items.Refresh();
                 if (TrackedGrid.RowDefinitions[2].Height == new GridLength(0))
                     TrackedGrid.RowDefinitions[2].Height = new GridLength(TrackedGrid.ActualHeight / 2 - 5);
             }

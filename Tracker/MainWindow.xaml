@@ -8,7 +8,7 @@
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:cachedImage="clr-namespace:CachedImage;assembly=CachedImage"
         mc:Ignorable="d"
-        Title="RLTracker" Height="600" Width="738" MaxWidth="738" MinWidth="738" MinHeight="500" ResizeMode="CanResize" Icon="/rocket-league-icon.ico">
+        Title="RLTracker" Height="600" Width="936" MinHeight="500" ResizeMode="CanResize" Icon="/rocket-league-icon.ico">
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
             <Button x:Name="GithubButton" Click="LaunchGitHubSite" ToolTip="Open up the GitHub site" Content="">
@@ -62,12 +62,12 @@
                 Width="40" Background="Transparent" BorderThickness="0" Style="{DynamicResource MahApps.Styles.Button.Circle}">
             <iconPacks:PackIconEvaIcons Kind="Search"/>
         </Button>
-        <Button x:Name="SettingsButton" HorizontalAlignment="Left" Margin="567,3,0,0" Click="SettingsButton_Click" Width="40" BorderThickness="0" Background="Transparent" Style="{DynamicResource MahApps.Styles.Button.Circle}" RenderTransformOrigin="0.277,0.181" Height="40" VerticalAlignment="Top">
+        <Button x:Name="SettingsButton" Margin="0,3,161,0" Click="SettingsButton_Click" BorderThickness="0" Background="Transparent" Style="{DynamicResource MahApps.Styles.Button.Circle}" RenderTransformOrigin="0.277,0.181" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Width="40">
             <iconPacks:FeatherIcons Kind="Settings"/>
         </Button>
-        <Button x:Name="ForceRefreshButton" Margin="612,3,0,0" Click="ForceRefreshButton_Click" BorderBrush="Transparent" Background="Transparent"
+        <Button x:Name="ForceRefreshButton" Margin="0,3,40,0" Click="ForceRefreshButton_Click" BorderBrush="Transparent" Background="Transparent"
                 RenderTransformOrigin="0.211,0.276" Height="40" Style="{StaticResource MahApps.Styles.Button.Square}"
-                VerticalAlignment="Top" HorizontalAlignment="Left" Width="116">
+                VerticalAlignment="Top" HorizontalAlignment="Right" Width="116">
             <DockPanel>
                 <iconPacks:PackIconModern DockPanel.Dock="Left" Kind="Refresh"/>
                 <Label DockPanel.Dock="Right" Content="{Binding RefreshTime}" VerticalContentAlignment="Top" Padding="5,0,0,0" FontSize="12" />
@@ -134,16 +134,25 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid Name="TrackedGrid" ScrollViewer.CanContentScroll="True" HorizontalAlignment="Center" Width="738" Margin="0,2,0,0" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
+        <Grid Name="TrackedGrid" ScrollViewer.CanContentScroll="True" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Auto"  Margin="0,0,0,1" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="5" />
                 <RowDefinition Height="0" />
             </Grid.RowDefinitions>
-            
-            <DataGrid Name="TrackedUserGrid" Grid.Row="0" ItemsSource="{Binding Users}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" AutoGenerateColumns="False" CanUserAddRows="False" 
+
+            <DataGrid Name="TrackedUserGrid" Grid.Row="0" ItemsSource="{Binding Users}" ScrollViewer.HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False" CanUserAddRows="False" 
                       CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False"  EnableRowVirtualization="False" EnableColumnVirtualization="False"
                       MouseDoubleClick="TrackedUserGrid_MouseDoubleClick">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="FontWeight"  Value="Bold" />
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        <Setter Property="FontSize" Value="12"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="200">
                         <DataGridTemplateColumn.CellTemplate>
@@ -164,38 +173,66 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="100" Header="Un-Ranked">
+                    <DataGridTemplateColumn Width="80" Header="Un-Ranked" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <local:RankDispaly Rank="{Binding CasualModel}"  />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="100" Header="Ranked 3v3">
+                    <DataGridTemplateColumn Width="80" Header="Ranked 3v3">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <local:RankDispaly Rank="{Binding ThreesModel}"  />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="100" Header="Ranked 2v2">
+                    <DataGridTemplateColumn Width="80" Header="Ranked 2v2">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <local:RankDispaly Rank="{Binding TwosModel}"  />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="100" Header="Ranked 1v1">
+                    <DataGridTemplateColumn Width="80" Header="Ranked 1v1">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <local:RankDispaly Rank="{Binding OnesModel}"  />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="100" Header="Tournament">
+                    <DataGridTemplateColumn Width="80" Header="Tournament">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <local:RankDispaly Rank="{Binding TournamentModel}"  />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="80" Header="Rumble">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <local:RankDispaly Rank="{Binding RumbleModel}"  />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="80" Header="Dropshot">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <local:RankDispaly Rank="{Binding DropshotModel}"  />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="80" Header="Hoops">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <local:RankDispaly Rank="{Binding HoopsModel}"  />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="80" Header="Snowday">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <local:RankDispaly Rank="{Binding SnowdayModel}"  />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -209,9 +246,9 @@
                     </ContextMenu>
                 </DataGrid.ContextMenu>
             </DataGrid>
-            
+
             <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" Background="{DynamicResource MahApps.Brushes.Badged.Background}"/>
-            
+
             <Grid x:Name="SessionsGrid" Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="631*"/>
