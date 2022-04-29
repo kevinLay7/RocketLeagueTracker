@@ -12,9 +12,12 @@ namespace Tracker
         {
             var settings = AppSettings.Load();
 
-            //Set theme
-            ThemeManager.Current.ChangeThemeColorScheme(this, settings.Color);        
-            ThemeManager.Current.ChangeThemeBaseColor(this, settings.UseDarkMode.Value ? "Dark" : "Light");
+            if(settings != null)
+            {
+                //Set theme
+                ThemeManager.Current.ChangeThemeColorScheme(this, settings.Color);        
+                ThemeManager.Current.ChangeThemeBaseColor(this, settings.UseDarkMode.Value ? "Dark" : "Light");
+            }
 
             var window = new MainWindow(settings);
             window.Show();

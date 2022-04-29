@@ -21,6 +21,7 @@ namespace Tracker
                 System.IO.File.WriteAllText(settingsFilePath, JsonConvert.SerializeObject(this));
             }
         }
+
         public static AppSettings Load()
         {
             AppSettings output = null;
@@ -41,7 +42,12 @@ namespace Tracker
                     System.IO.File.WriteAllText(settingsFilePath, JsonConvert.SerializeObject(output));
                 }
             }
-
+            else
+            {   
+                output = new AppSettings();
+                System.IO.File.WriteAllText(settingsFilePath, JsonConvert.SerializeObject(output));
+            }
+            
             return output;
         }
 
@@ -62,6 +68,7 @@ namespace Tracker
                 //If the settings file doesn't exist, create it.
                 if (!System.IO.File.Exists(settingsFilePath))
                 {
+                    System.IO.Directory.CreateDirectory(defaultFilePath);
                     System.IO.File.WriteAllText(settingsFilePath, JsonConvert.SerializeObject(this));
                 }
 
